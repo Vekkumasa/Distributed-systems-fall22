@@ -14,7 +14,7 @@ let products = [
 ]
 
 router.get("/ping", (req,res) => {
-  res.send("pong");
+  res.send("pong from products");
 });
 
 router.get("/api/products", (req,res) => {

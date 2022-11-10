@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+    products:
+        build:
+            context: ./products
+        ports:
+            - "3001:3001"
+        container_name: products
+        depends_on:
+            - nginx
+
+    user:
+        build:
+            context: ./user
+        ports:
+            - "3002:3002"
+        container_name: user
+        depends_on:
+            - nginx
+
+    nginx:
+        restart: always
+        image: nginx:latest
+        container_name: nginx
+        volumes:
+            - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+        ports:
+            - "8080:80"
