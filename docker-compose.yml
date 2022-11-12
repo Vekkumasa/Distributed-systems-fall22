@@ -9,15 +9,6 @@ services:
         depends_on:
             - nginx
 
-    user:
-        build:
-            context: ./user
-        ports:
-            - "3002:3002"
-        container_name: user
-        depends_on:
-            - nginx
-
     nginx:
         restart: always
         image: nginx:latest
@@ -26,3 +17,39 @@ services:
             - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
         ports:
             - "8080:80"
+
+#    db:
+#        image: mysql
+#        # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+#        # (this is just an example, not intended to be a production configuration)
+#        command: --default-authentication-plugin=mysql_native_password
+#        restart: always
+#        container_name: user-db
+#        environment:
+#            MYSQL_ROOT_PASSWORD: example
+
+    user-db:
+        command: --init-file /tmp/create-db.sql
+        build:
+            context: ./user-db
+        ports:
+            - "3306:3306"
+        container_name: user-db
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+
+
+    users:
+        build:
+            context: ./users
+        ports:
+            - "3002:3002"
+        container_name: users
+        depends_on:
+            - nginx
+            - user-db
+        environment:
+            MYSQL_DATABASE: local_db
+            MYSQL_USER: root
+            MYSQL_PASSWORD: password
+            MYSQL_HOST: user-db
