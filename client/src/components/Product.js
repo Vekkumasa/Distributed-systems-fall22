@@ -4,7 +4,10 @@ const Product = ({ product }) => {
 
   return (
     <div>
-      {product.name}: {product.price}
+      <h3>{product.name}</h3>
+      <p>{product.description}</p>
+      <p>Quantity: {product.quantity}</p>
+      <p>Price: {product.price}</p>
     </div>
   )
 } 

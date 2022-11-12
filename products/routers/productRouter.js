@@ -1,24 +1,16 @@
 const router = require("express").Router();
+const db_interface = require("../product-db-interface")
 
-let products = [
-  {
-    'id': 1,
-    'name': 'beer',
-    'price': 10
-  },
-  {
-    'id': 2,
-    'name': 'better beer',
-    'price': 12
-  }
-]
 
 router.get("/ping", (req,res) => {
   res.send("pong from products");
 });
 
-router.get("/api/products", (req,res) => {
-  res.json(products)
+router.get("/api/products", async function (req,res, next) {
+  const products = await db_interface.query(
+      `SELECT * from products`
+  );
+  res.json(products);
 })
 
 module.exports = router;

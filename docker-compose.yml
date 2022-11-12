@@ -1,13 +1,5 @@
 version: "3.8"
 services:
-    products:
-        build:
-            context: ./products
-        ports:
-            - "3001:3001"
-        container_name: products
-        depends_on:
-            - nginx
 
     nginx:
         restart: always
@@ -38,6 +30,17 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: password
 
+    product-db:
+        command: --init-file /tmp/create-db.sql
+        build:
+            context: ./product-db
+        ports:
+            - "3307:3307"
+        container_name: product-db
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_TCP_PORT: 3307
+
 
     users:
         build:
@@ -53,3 +56,19 @@ services:
             MYSQL_USER: root
             MYSQL_PASSWORD: password
             MYSQL_HOST: user-db
+
+
+    products:
+        build:
+            context: ./products
+        ports:
+            - "3001:3001"
+        container_name: products
+        depends_on:
+            - nginx
+            - product-db
+        environment:
+            MYSQL_DATABASE: local_db
+            MYSQL_USER: root
+            MYSQL_PASSWORD: password
+            MYSQL_HOST: product-db
