@@ -10,16 +10,6 @@ services:
         ports:
             - "8080:80"
 
-#    db:
-#        image: mysql
-#        # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
-#        # (this is just an example, not intended to be a production configuration)
-#        command: --default-authentication-plugin=mysql_native_password
-#        restart: always
-#        container_name: user-db
-#        environment:
-#            MYSQL_ROOT_PASSWORD: example
-
     user-db:
         command: --init-file /tmp/create-db.sql
         build:
