@@ -1,8 +1,15 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { handleLoginModal } from '../reducers/ModalReducer';
+import { logoutUser } from '../reducers/UserReducer';
 import { AppBar, Box, Toolbar, Typography, Button, IconButton } from '@mui/material';
 import { Menu } from '@mui/icons-material';
 
-export default function ButtonAppBar() {
+const Navibar = () => {
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
+
+  console.log('user', user)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -19,9 +26,15 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Beers
           </Typography>
-          <Button color="inherit">Login</Button>
+          {user ?
+            <Button color="inherit" onClick={() => dispatch(logoutUser())}>Logout</Button>
+          : 
+            <Button color="inherit" onClick={() => dispatch(handleLoginModal(true))}>Login</Button>
+          }
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
+
+export default Navibar;
