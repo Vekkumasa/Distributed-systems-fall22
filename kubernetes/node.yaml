@@ -15,8 +15,17 @@ spec:
       containers:
         - name: node
           image: simonlechner/product
+          env:
+          - name: MYSQL_HOST
+            value: mysql
+          - name: MYSQL_USER
+            value: "root"
+          - name: MYSQL_PASSWORD
+            value: "password"
+          - name: MYSQL_DATABASE
+            value: "local_db"
           ports:
-            - containerPort: 3001
+            - containerPort: 3306
 ---
 apiVersion: v1
 kind: Service
