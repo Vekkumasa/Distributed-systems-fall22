@@ -27,13 +27,3 @@ const App = () => {
 }
 
 export default App;
-
-/*
-return (
-    <div>
-      <Navibar />
-      <LogInModal />
-      <Products />
-    </div>
-  )
-*/
