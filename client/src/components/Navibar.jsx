@@ -2,14 +2,19 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { handleLoginModal } from '../reducers/ModalReducer';
 import { logoutUser } from '../reducers/UserReducer';
+import { clearShoppingCart } from '../reducers/ShoppingCartReducer';
 import { AppBar, Box, Toolbar, Typography, Button, IconButton } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import { Menu, ShoppingCart } from '@mui/icons-material';
 
-const Navibar = () => {
+const Navibar = ({checkoutPageOpen, setCheckoutPageOpen}) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
 
-  console.log('user', user)
+  const logout = () => {
+    dispatch(logoutUser())
+    dispatch(clearShoppingCart())
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -20,6 +25,7 @@ const Navibar = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => setCheckoutPageOpen(false)}
           >
             <Menu />
           </IconButton>
@@ -27,7 +33,19 @@ const Navibar = () => {
             Beers
           </Typography>
           {user ?
-            <Button color="inherit" onClick={() => dispatch(logoutUser())}>Logout</Button>
+            <div>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                sx={{ mr: 2 }}
+                onClick={() => setCheckoutPageOpen(true)}
+              >
+                <ShoppingCart />
+              </IconButton>
+              <Button color="inherit" onClick={() => logout()}>Logout</Button>
+            </div>
           : 
             <Button color="inherit" onClick={() => dispatch(handleLoginModal(true))}>Login</Button>
           }

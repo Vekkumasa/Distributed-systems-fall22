@@ -33,5 +33,5 @@ spec:
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: 3000
+      targetPort: 3000 # targetPort must match to containerPort
       nodePort: 30000 # Value range is 30000 - 32767
