@@ -37,6 +37,6 @@ spec:
     app: node-user
   ports:
   - protocol: TCP
-    port: 80 # expose the service on internal port 3000
-    targetPort: 3002 # our NodeJS app listens on port 3000
-    nodePort: 30100
+    port: 3002
+    targetPort: 3002
+    nodePort: 30102

@@ -17,7 +17,7 @@ spec:
           image: simonlechner/product
           env:
           - name: MYSQL_HOST
-            value: mysql
+            value: mysql-product
           - name: MYSQL_USER
             value: "root"
           - name: MYSQL_PASSWORD
@@ -25,7 +25,7 @@ spec:
           - name: MYSQL_DATABASE
             value: "local_db"
           ports:
-            - containerPort: 3306
+            - containerPort: 3307
 ---
 apiVersion: v1
 kind: Service
@@ -37,6 +37,6 @@ spec:
     app: node
   ports:
   - protocol: TCP
-    port: 80 # expose the service on internal port 3000
-    targetPort: 3001 # our NodeJS app listens on port 3000
-    nodePort: 30100
+    port: 3001
+    targetPort: 3001
+    nodePort: 30101
