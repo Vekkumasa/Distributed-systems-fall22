@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webapp
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: webapp
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: vekkumasa/ds22_client:latest
+        image: vekkumasa/ds22:latest
         ports:
         - containerPort: 3000
 
@@ -27,11 +27,11 @@ kind: Service
 metadata:
   name: webapp-service
 spec:
-  type: NodePort # ClusterIP is default value and it's for internal services, NodePort is external service
+  type: ClusterIP # ClusterIP is default value and it's for internal services, NodePort is external service
   selector:
     app: webapp
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000 # targetPort must match to containerPort
-      nodePort: 30000 # Value range is 30000 - 32767
+#      nodePort: 30000 # Value range is 30000 - 32767
