@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: vekkumasa/ds22:latest
+        #image: vekkumasa/ds22:latest # this is development environment docker image  
+        image: vekkumasa/ds22-client-build:latest # This has production build docker image
         ports:
         - containerPort: 3000
 
