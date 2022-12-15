@@ -14,16 +14,18 @@ spec:
     spec:
       containers:
         - name: node
-          image: simonlechner/product
+          image: edzhuks/products
           env:
-          - name: MYSQL_HOST
-            value: mysql-product
+          - name: MYSQL_HOST_READ
+            value: mysql-read
+          - name: MYSQL_HOST_WRITE
+            value: "mysql-0.mysql"    #This is the pod which hosts the 'main' database that gets replicated to the read pods
           - name: MYSQL_USER
             value: "root"
           - name: MYSQL_PASSWORD
-            value: "password"
-          - name: MYSQL_DATABASE
-            value: "local_db"
+            value: ""
+#          - name: MYSQL_DATABASE     #Can not pass the database anymore because it may not exist
+#            value: "test"
 ---
 apiVersion: v1
 kind: Service
