@@ -25,8 +25,8 @@ Go to `beerbeer.info/products/dbinit` to initialize the product database with so
 The user database is initialized automatically
 
 Log in with one of these users:
-- edgars edgars
-- simon simon
-- veli matti
+- username: edgars password: edgars
+- username: simon password: simon
+- username: veli password: matti
 
 You can now order products from our webstore!
