@@ -11,6 +11,7 @@ router.get("/api/products", async function (req,res, next) {
   connection.connect( function(err){
     if (err){
       res.json("Could not connect to database")
+      return
     }
     connection.query(`SELECT * from local_db.products`, function (err, products){
           if (err){
@@ -18,10 +19,10 @@ router.get("/api/products", async function (req,res, next) {
           } else {
             res.json(products)
           }
+          connection.end()
         }
     );
   })
-
 })
 
 router.post("/api/buy", async function (req, res, next) {
@@ -34,11 +35,13 @@ router.post("/api/buy", async function (req, res, next) {
   connection_read.connect(function(err) {
     if (err) {
       res.json("Could not connect to read database")
+      return
     }
     ids = items.map(({id, quantity}) => id)
     connection_read.query('SELECT price, quantity as q from local_db.products WHERE id in (?) order by field(id, ?)', [ids, ids], function (err, result) {
       if (err) {
         res.json("Database error " + err.toString())
+        return;
       }
       result.forEach(function (value, i){
         sum += value.price * items[i].quantity
@@ -51,14 +54,24 @@ router.post("/api/buy", async function (req, res, next) {
       if (bought_too_much){
         return
       }
-      res.json(sum);
       console.log("someone bought beer for " + sum)
-      result.forEach(function (value, i){
-            connection_write.query(`UPDATE local_db.products SET quantity = ? where id = ?`, [value.q-items[i].quantity, items[i].id])
-          })
+      connection_write.connect(function(err) {
+        if (err) {
+          res.json("Could not connect to read database")
+          return
+        }
+        res.json(sum);
+        result.forEach(function (value, i) {
+          connection_write.query(`UPDATE local_db.products
+                                  SET quantity = ?
+                                  where id = ?`, [value.q - items[i].quantity, items[i].id])
+        })
+
+        connection_read.end()
+        connection_write.end()
+      })
     })
   })
-
 })
 
 router.get("/dbinit", async function (req, res){
@@ -66,6 +79,7 @@ router.get("/dbinit", async function (req, res){
   connection.connect( function(err) {
     if (err) {
       res.json("Could not connect to database")
+      return
     }
     connection.query(`DROP DATABASE IF EXISTS local_db;`)
     connection.query(`CREATE DATABASE local_db;`)
@@ -100,7 +114,7 @@ router.get("/dbinit", async function (req, res){
                                      'Lahden Erikois NEIPA on mehukkaasti vaaleankeltainen ja samea pintahiivaolut. Sen maku on tulvillaan kypsien trooppisten hedelmien, kuten ananaksen, mangon ja appelsiinin mehevyyttä.',
                                      67, 20.00);`)
 
-
+    connection.end()
     res.json("Database created!!!")
   })
 })
