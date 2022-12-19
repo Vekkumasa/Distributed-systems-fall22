@@ -2,30 +2,13 @@ const router = require("express").Router();
 const db_interface = require("../product-db-interface")
 
 
-router.get("/ping", (req,res) => {
+router.get("/products/ping", (req,res) => {
   res.send("pongo");
 });
 
-router.get("/api/products", async function (req,res, next) {
-  let connection = db_interface.get_connection(true)
-  connection.connect( function(err){
-    if (err){
-      res.json("Could not connect to database")
-      return
-    }
-    connection.query(`SELECT * from local_db.products`, function (err, products){
-          if (err){
-            res.json(err)
-          } else {
-            res.json(products)
-          }
-          connection.end()
-        }
-    );
-  })
-})
 
-router.post("/api/buy", async function (req, res, next) {
+
+router.post("/products/buy", async function (req, res, next) {
   let connection_read = db_interface.get_connection(true)
   let connection_write = db_interface.get_connection(false)
   const  items  = req.body;
@@ -73,8 +56,7 @@ router.post("/api/buy", async function (req, res, next) {
     })
   })
 })
-
-router.get("/dbinit", async function (req, res){
+router.get("/products/dbinit", async function (req, res){
   let connection = db_interface.get_connection(false)
   connection.connect( function(err) {
     if (err) {
@@ -116,6 +98,24 @@ router.get("/dbinit", async function (req, res){
 
     connection.end()
     res.json("Database created!!!")
+  })
+})
+router.get("/products", async function (req,res, next) {
+  let connection = db_interface.get_connection(true)
+  connection.connect( function(err){
+    if (err){
+      res.json("Could not connect to database")
+      return
+    }
+    connection.query(`SELECT * from local_db.products`, function (err, products){
+          if (err){
+            res.json(err)
+          } else {
+            res.json(products)
+          }
+          connection.end()
+        }
+    );
   })
 })
 module.exports = router;

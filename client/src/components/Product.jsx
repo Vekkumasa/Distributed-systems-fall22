@@ -54,7 +54,7 @@ const Product  = ({ product, checkout = false, quantity = 0 }) => {
           />
         <CardContent>
           <Typography className={`${classes.overflow} ${classes.centerText}`} style={{ fontSize: 16 }} gutterBottom variant="h6" component="h2">
-            {product.name} <br/> {product.price}€ 
+            {product.name} <br/> {product.price}€ <br/> stock: {product.quantity}
           </Typography>
           <Typography className={`${classes.overflow} ${classes.centerText}`} variant="body2" color="textSecondary" component="p">
             {product.description}

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Product from "./Product";
 import { makeStyles } from '@mui/styles';
 import { Button } from '@mui/material';
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -19,8 +20,12 @@ const Checkout = () => {
   const shoppingCart = useSelector(state => state.shoppingCart);
   const user = useSelector(state => state.user);
 
-  const purchaseProducts = () => {
-    console.log('not implemented')
+  const purchaseProducts = async() => {
+      let cart = []
+      shoppingCart.map(function(p)  {cart.push( {"id":p.product.id, "quantity":p.quantity})})
+      const response = await axios.post('http://beerbeer.info/products/buy', cart)
+      console.log(response.data)
+      return response.data
   }
 
   return (

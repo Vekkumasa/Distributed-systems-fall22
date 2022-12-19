@@ -20,7 +20,7 @@ const Products = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    axios.get('http://localhost:51009/api/products').then((res) => {
+    axios.get('http://beerbeer.info/products').then((res) => {
       setProducts(res.data)
     })
   }, [])

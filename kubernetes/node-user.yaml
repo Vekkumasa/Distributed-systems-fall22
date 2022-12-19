@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: node-user
-          image: simonlechner/users
+          image: edzhuks/users
           env:
           - name: MYSQL_HOST
             value: mysql-user
