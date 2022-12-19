@@ -28,7 +28,7 @@ router.post("/products/buy", async function (req, res, next) {
       }
       result.forEach(function (value, i){
         sum += value.price * items[i].quantity
-        if (value.q < items[i].quantity){
+        if (value.q < items[i].quantity && !bought_too_much){
           res.json("Error: buying more than available")
           bought_too_much = true
           console.log("Buying more than in stock")
