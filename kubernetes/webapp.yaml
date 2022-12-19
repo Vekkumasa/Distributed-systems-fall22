@@ -15,10 +15,10 @@ spec:
         app: webapp
     spec:
       containers:
-        - name: webapp
-          image: vekkumasa/ds22:latest
-          ports:
-            - containerPort: 3000
+      - name: webapp
+        image: vekkumasa/ds22_client:latest
+        ports:
+        - containerPort: 3000
 
 ---
 
